@@ -14,7 +14,6 @@ export class IsUserExistByPhoneConstraint implements ValidatorConstraintInterfac
 
 }
 
-
 export function IsUniquePhone(validationOptions: ValidationOptions) {
     return function(object: Object, propertyName: string) {
         registerDecorator({
