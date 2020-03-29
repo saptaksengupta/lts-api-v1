@@ -1,15 +1,28 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { BoardsModule } from './boards/boards.module';
-import { ListItemsModule } from './list-items/list-items.module';
+import { UserModule } from './user/user.module';
+import { BoardsModule } from './board/boards.module';
+import { ListItemsModule } from './list-item/list-items.module';
+
+import { TransformInterceptor } from './shared/transform.interseptor';
+import { HttpErrorFilter } from './shared/http-error.filter';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, BoardsModule, ListItemsModule],
+  imports: [TypeOrmModule.forRoot(), UserModule, BoardsModule, ListItemsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule { }
