@@ -5,9 +5,9 @@ import { getCustomRepository } from 'typeorm';
 @ValidatorConstraint({async: true})
 export class IsUserExistByPhoneConstraint implements ValidatorConstraintInterface {
 
-    validate(phone: any, args: ValidationArguments) {
+    async validate(phone: any, args: ValidationArguments) {
         const userRepository = getCustomRepository(UserRepository);
-        const user  = userRepository.findUserByPhone(phone);
+        const user  = await userRepository.findUserByPhone(phone);
         if(user) return false;
         return true;
     }
