@@ -19,4 +19,8 @@ export class UserRepository {
         return this.manager.findOne('User', {phone});
     }
 
+    findUserById(id: number) {
+        return this.manager.findOne('User', {id});
+    }
+
 }

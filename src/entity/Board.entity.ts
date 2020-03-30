@@ -1,18 +1,24 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
 import { User } from './user.entity';
 
+export enum BoardStatus {
+    DELETED = 'deleted',
+    ACTIVE = 'active',
+    ARCHIVED = 'archived'
+}
+
 @Entity()
 export class Board {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
-        length: 20
+        length: 200
     })
     name: string;
 
     @Column({
-        length: 160
+        length: 400
     })
     description: string;
 
@@ -22,10 +28,18 @@ export class Board {
     @Column({
         type: "datetime"
     })
-    created_at: Date;
+    created_at: string;
 
     @Column({
         type: "datetime"
     })
-    updated_at: Date;
+    updated_at: string;
+
+    @Column({
+        type: 'enum',
+        enum: BoardStatus,
+        default: BoardStatus.ACTIVE
+    })
+    status: BoardStatus;
+
 }
