@@ -2,25 +2,22 @@ import {EntityRepository, Repository, EntityManager} from "typeorm";
 import {User} from "../entity/user.entity";
 import { CreateUserDto } from '../user/dto/createUser.dto';
 
-@EntityRepository()
-export class UserRepository {
-
-    constructor(private manager: EntityManager) {
-    }
+@EntityRepository(User)
+export class UserRepository extends Repository<User> {
 
     createAndSave(userToCreate: CreateUserDto) {
         const user = new User();
         user.name = userToCreate.name;
         user.phone = userToCreate.phone;
-        return this.manager.save(user);
+        return this.save(user);
     }
 
-    findUserByPhone(phone: string) {
-        return this.manager.findOne('User', {phone});
+    findUserByPhone(phone: number) {
+        return this.findOne({ phone });
     }
 
     findUserById(id: number) {
-        return this.manager.findOne('User', {id});
+        return this.findOne({id});
     }
 
 }

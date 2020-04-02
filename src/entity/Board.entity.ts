@@ -42,4 +42,8 @@ export class Board {
     })
     status: BoardStatus;
 
+    public ownedBy(userId: number): boolean {
+        return this.user.id === userId;
+    }
+
 }

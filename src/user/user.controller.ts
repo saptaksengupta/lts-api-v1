@@ -27,7 +27,7 @@ export class UserController {
 
     @Get('/find')
     async getUserByPhone(@Req() request: Request): Promise<DefaultHttpReturnType> {
-        const phone = request.query.phone;
+        const phone = parseInt(request.query.phone);
         const user = await this.userService.getUserByPhone(phone);
 
         if (!user) {

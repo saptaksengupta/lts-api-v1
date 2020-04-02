@@ -1,3 +1,5 @@
+import { User } from "src/entity/user.entity";
+
 export class CreatedBoardDto {
     //TODO: Needs Modification
     id: number;
@@ -5,4 +7,5 @@ export class CreatedBoardDto {
     description: string;
     createdAt: string;
     status: string;
+    user: User
 }
