@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, HttpException, HttpStatus, Put, Param } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, HttpException, HttpStatus, Put, Param, Get } from '@nestjs/common';
 import { DefaultHttpReturnType } from 'src/shared/global.type';
 import { CreateBoardDto } from './dto/createBoardDto.dto';
 import { ValidationPipe } from 'src/shared/validation.pipe';
@@ -49,7 +49,7 @@ export class BoardController {
             throw new HttpException(ERROR_STRINGS.BOARD_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
         }
 
-        if (!board.ownedBy(user.id)) {
+        if (!board.isOwnedBy(user.id)) {
             throw new HttpException("This Board Does Not Belongs To This User At All", HttpStatus.BAD_REQUEST);
         }
         try {
