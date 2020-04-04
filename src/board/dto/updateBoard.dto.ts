@@ -1,9 +1,14 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class UpdateBoardDto {
-    //TODO: Needs Modification
+    
+    @IsString()
     name?: string;
+
+    @IsString()
     description?: string;
+
+    @IsString()
     status?: string;
 
     @IsNotEmpty()
