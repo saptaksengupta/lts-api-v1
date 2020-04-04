@@ -35,6 +35,9 @@ export class Board {
     })
     updated_at: string;
 
+    @Column()
+    last_modified_by: number;
+
     @Column({
         type: 'enum',
         enum: BoardStatus,
@@ -42,7 +45,7 @@ export class Board {
     })
     status: BoardStatus;
 
-    public ownedBy(userId: number): boolean {
+    public isOwnedBy(userId: number): boolean {
         return this.user.id === userId;
     }
 

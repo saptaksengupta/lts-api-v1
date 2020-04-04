@@ -34,11 +34,17 @@ export class BoardRepository extends Repository<Board> {
         if(boardToUpdate.status){
             propertiesToModify['status'] = boardToUpdate.status;
         }
+        propertiesToModify['updated_at'] = new Date().toISOString();
+        propertiesToModify['last_modified_by'] = boardToUpdate.lastModifiedBy;
         return this.update(boardId, propertiesToModify);
     }
 
     findBoardById(id: number) {
         return this.findOne({ id }, { relations: ["user"] });
+    }
+
+    findAll() {
+        return this.findAll();
     }
 
 }

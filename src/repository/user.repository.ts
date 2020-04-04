@@ -17,7 +17,7 @@ export class UserRepository extends Repository<User> {
     }
 
     findUserById(id: number) {
-        return this.findOne({id});
+        return this.findOne({id}, {relations: ['boards']});
     }
 
 }

@@ -1,10 +1,11 @@
-import { Controller, Post, Body, Res, HttpStatus, HttpException, UsePipes, Get, Query, Req } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, HttpException, UsePipes, Get, Query, Req, Param } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ValidationPipe } from 'src/shared/validation.pipe';
 import { UserService } from './user.service';
 
 import { Request } from 'express';
 import { DefaultHttpReturnType } from 'src/shared/global.type';
+import { ERROR_STRINGS } from 'src/shared/global-strings.constant';
 
 @Controller('users')
 export class UserController {
@@ -20,7 +21,7 @@ export class UserController {
             const user = await this.userService.createAndSaveUser(postedUserData);
             return { data: user, code: HttpStatus.OK };
         } catch (error) {
-            throw new HttpException('Unexpected Error, Please Try Again', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -35,6 +36,19 @@ export class UserController {
         }
 
         return { data: user, code: HttpStatus.OK };
+    }
+
+    @Get('/:userId/boards')
+    async getAllBoards(@Param() params) {
+        const userId = params.userId;
+        const user = await this.userService.getUserById(userId);
+        if (!user) {
+            throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
+        }
+
+        const boards = user.boards;
+        return {data: boards, code: HttpStatus.OK};
+
     }
 
 }

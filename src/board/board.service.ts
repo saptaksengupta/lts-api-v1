@@ -36,4 +36,9 @@ export class BoardService {
         const boardRepository = getCustomRepository(BoardRepository);
         return await boardRepository.findBoardById(boardId);
     }
+
+    async getAllBoards() {
+        const boardRepository = getCustomRepository(BoardRepository);
+        return await boardRepository.findAll();
+    }
 }
