@@ -10,8 +10,10 @@ export class User {
     @Column()
     name: string;
 
-    @Column()
-    phone: number;
+    @Column({
+        length:"10"
+    })
+    phone: string;
 
     @Column({
         nullable: true
