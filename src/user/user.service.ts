@@ -18,7 +18,7 @@ export class UserService {
         return await userRepository.findUserById(userId);
     }
 
-    async getUserByPhone(phone: number){
+    async getUserByPhone(phone: string){
         const userRepository = getCustomRepository(UserRepository);
         return await userRepository.findUserByPhone(phone);
     }

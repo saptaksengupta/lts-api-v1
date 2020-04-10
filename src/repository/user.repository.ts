@@ -12,7 +12,7 @@ export class UserRepository extends Repository<User> {
         return this.save(user);
     }
 
-    findUserByPhone(phone: number) {
+    findUserByPhone(phone: string) {
         return this.findOne({ phone });
     }
 

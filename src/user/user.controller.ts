@@ -21,6 +21,7 @@ export class UserController {
             const user = await this.userService.createAndSaveUser(postedUserData);
             return { data: user, code: HttpStatus.OK };
         } catch (error) {
+            console.log(error);
             throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -28,7 +29,7 @@ export class UserController {
 
     @Get('/find')
     async getUserByPhone(@Req() request: Request): Promise<DefaultHttpReturnType> {
-        const phone = parseInt(request.query.phone);
+        const phone = request.query.phone;
         const user = await this.userService.getUserByPhone(phone);
 
         if (!user) {
