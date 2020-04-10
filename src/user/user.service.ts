@@ -3,18 +3,22 @@ import { CreateUserDto } from './dto/createUser.dto';
 
 import {getCustomRepository} from 'typeorm';
 import { UserRepository } from '../repository/user.repository';
+import { User } from 'src/entity/user.entity';
 
 @Injectable()
 export class UserService {
-
-    private userRepository: UserRepository;
 
     async createAndSaveUser(userToCreate: CreateUserDto) {
         const userRepository = getCustomRepository(UserRepository);
         return await userRepository.createAndSave(userToCreate);
     }
 
-    async getUserByPhone(phone: string){
+    async getUserById(userId: number) {
+        const userRepository = getCustomRepository(UserRepository);
+        return await userRepository.findUserById(userId);
+    }
+
+    async getUserByPhone(phone: number){
         const userRepository = getCustomRepository(UserRepository);
         return await userRepository.findUserByPhone(phone);
     }
