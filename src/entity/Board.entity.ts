@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
 import { User } from './user.entity';
+import { ListItem } from "./ListItem.entity";
 
 export enum BoardStatus {
     DELETED = 'deleted',
@@ -24,6 +25,9 @@ export class Board {
 
     @ManyToOne(type => User, user => user.boards)
     user: User;
+
+    @OneToMany(type => ListItem, listitem => listitem.board)
+    listitems: ListItem[]
 
     @Column({
         type: "datetime"
