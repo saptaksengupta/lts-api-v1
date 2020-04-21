@@ -12,6 +12,7 @@ export class BoardRepository extends Repository<Board> {
         let boardObj = {
             name: boardToCreate.name,
             description: boardToCreate.description,
+            last_modified_by: user.id,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         };
