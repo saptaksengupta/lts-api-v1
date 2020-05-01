@@ -60,4 +60,26 @@ export class BoardController {
             throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Get(":boardId")
+    async getBoardDetailsById(@Param() params, @Body() requestBody: any) {
+        const boardId = params.boardId;
+        const userId = requestBody.userId;
+
+        const user = await this.userService.getUserById(userId, false);
+        if (!user) {
+            throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            const board = await this.baordService.getBoardById(boardId);
+            if (!board.isOwnedBy(user.id)) {
+                throw new HttpException("This Board Does Not Belongs To This User At All", HttpStatus.BAD_REQUEST);
+            }
+
+            return { data: {board: this.baordService.getFormattedBoardResponse(board)}, code: HttpStatus.OK };
+        } catch (error) {
+            console.log(error);
+            throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

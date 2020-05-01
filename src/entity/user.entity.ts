@@ -20,6 +20,6 @@ export class User {
     })
     image: string;
 
-    @OneToMany(type => Board, board => board.user)
+    @OneToMany(type => Board, board => board.user, { eager: true, nullable: false, onDelete: 'CASCADE' })
     boards: Board[]
 }

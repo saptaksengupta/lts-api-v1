@@ -41,7 +41,7 @@ export class BoardRepository extends Repository<Board> {
     }
 
     findBoardById(id: number) {
-        return this.findOne({ id }, { relations: ["user"] });
+        return this.findOne({ id }, { relations: ["user", "listitems"] });
     }
 
     findAll() {

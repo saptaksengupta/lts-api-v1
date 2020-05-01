@@ -26,7 +26,7 @@ export class Board {
     @ManyToOne(type => User, user => user.boards)
     user: User;
 
-    @OneToMany(type => ListItem, listitem => listitem.board)
+    @OneToMany(type => ListItem, listitem => listitem.board, { eager: true, nullable: false, onDelete: 'CASCADE' })
     listitems: ListItem[]
 
     @Column({
@@ -51,6 +51,6 @@ export class Board {
 
     public isOwnedBy(userId: number): boolean {
         return this.user.id === userId;
-    }
+    } 
 
 }

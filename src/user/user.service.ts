@@ -13,9 +13,9 @@ export class UserService {
         return await userRepository.createAndSave(userToCreate);
     }
 
-    async getUserById(userId: number) {
+    async getUserById(userId: number, withRelations = false) {
         const userRepository = getCustomRepository(UserRepository);
-        return await userRepository.findUserById(userId);
+        return await userRepository.findUserById(userId, withRelations);
     }
 
     async getUserByPhone(phone: string){
