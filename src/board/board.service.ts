@@ -7,32 +7,11 @@ import { UpdateBoardDto } from './dto/updateBoard.dto';
 
 @Injectable()
 export class BoardService {
-
-    private toResponseObject(board: Board, withLists = false) {
-        const responseObjet = {
-            id: board.id, 
-            name: board.name, 
-            description: board.description, 
-            createdAt: board.created_at,
-            updatedAt: board.updated_at,
-            status: board.status,
-            userDetails: {name: board.user.name, phone: board.user.phone}
-        }
-
-        if(withLists) {
-            responseObjet['listItems'] = board.listitems;
-        }
-        return responseObjet;
-    }
-
-    public getFormattedBoardResponse(board: Board) {
-        return this.toResponseObject(board, true);
-    }
-
+    
     async createAndSaveBoard(boardToCreate: CreateBoardDto, user) {
         const boardRepository = getCustomRepository(BoardRepository);
         const createdBoard = await boardRepository.createAndSave(boardToCreate, user);
-        return this.toResponseObject(createdBoard);
+        return createdBoard.toResponseObject(true);
     }
 
     async updateBoard(boardId: number, boardToUpdate: UpdateBoardDto) {

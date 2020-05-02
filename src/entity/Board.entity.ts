@@ -53,4 +53,21 @@ export class Board {
         return this.user.id === userId;
     } 
 
+    public toResponseObject(withLists = false) {
+        const responseObjet = {
+            id: this.id, 
+            name: this.name, 
+            description: this.description, 
+            createdAt: this.created_at,
+            updatedAt: this.updated_at,
+            status: this.status,
+            userDetails: {name: this.user.name, phone: this.user.phone}
+        }
+
+        if(withLists) {
+            responseObjet['listItems'] = this.listitems.map(listitem => listitem.toResponseObject());
+        }
+        return responseObjet;
+    }
+
 }

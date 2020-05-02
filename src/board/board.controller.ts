@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, HttpException, HttpStatus, Put, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, HttpException, HttpStatus, Put, Param, Get, Query } from '@nestjs/common';
 import { DefaultHttpReturnType } from 'src/shared/global.type';
 import { CreateBoardDto } from './dto/createBoardDto.dto';
 import { ValidationPipe } from 'src/shared/validation.pipe';
@@ -10,7 +10,7 @@ import { ERROR_STRINGS } from '../shared/global-strings.constant';
 import { UpdateBoardDto } from './dto/updateBoard.dto';
 import { Board } from 'src/entity/board.entity';
 
-@Controller('board')
+@Controller('boards')
 export class BoardController {
 
     constructor(private baordService: BoardService, private userService: UserService) { }
@@ -62,21 +62,22 @@ export class BoardController {
     }
 
     @Get(":boardId")
-    async getBoardDetailsById(@Param() params, @Body() requestBody: any) {
+    async getBoardDetailsById(@Param() params, @Query() queryParams: any) {
         const boardId = params.boardId;
-        const userId = requestBody.userId;
-
-        const user = await this.userService.getUserById(userId, false);
-        if (!user) {
-            throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
-        }
+        console.log(queryParams);
+        const userId = queryParams.userId;
         try {
+            const user = await this.userService.getUserById(userId, false);
+            if (!user) {
+                throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
+            }
+
             const board = await this.baordService.getBoardById(boardId);
             if (!board.isOwnedBy(user.id)) {
                 throw new HttpException("This Board Does Not Belongs To This User At All", HttpStatus.BAD_REQUEST);
             }
 
-            return { data: {board: this.baordService.getFormattedBoardResponse(board)}, code: HttpStatus.OK };
+            return { data: { board: board.toResponseObject(true) }, code: HttpStatus.OK };
         } catch (error) {
             console.log(error);
             throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
