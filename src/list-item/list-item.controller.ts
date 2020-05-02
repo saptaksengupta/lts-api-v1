@@ -1,14 +1,20 @@
 import { Controller, Post, Body, HttpException, HttpStatus, Put, Param, Req, Get } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import { ERROR_STRINGS } from 'src/shared/global-strings.constant';
+import { ERROR_STRINGS, SOCKET_EVENTS } from 'src/shared/global-strings.constant';
 import { ListItemService } from './list-item.service';
 import { CreateListItemDto } from './dto/createListItem.dto';
 import { BoardService } from 'src/board/board.service';
+import { LtsAppGateway } from 'src/lts-app.gateway';
 
 @Controller('boards/:boardId/list-items/')
 export class ListItemController {
 
-    constructor(private userService: UserService, private boardService: BoardService, private listItemService: ListItemService){}
+    constructor(
+        private userService: UserService, 
+        private boardService: BoardService, 
+        private listItemService: ListItemService,
+        private ltsGateway: LtsAppGateway
+        ){}
 
     @Get(":listItemId")
     async getListItemDetails(@Param() params) {
@@ -41,6 +47,7 @@ export class ListItemController {
 
         try {
             const listItem = await this.listItemService.createListItem(user.id, postedListItem, board);   
+            this.ltsGateway.wss.emit(SOCKET_EVENTS.LIST_ITEM_ADDED, {data: listItem});
             return {data: listItem, code: HttpStatus.OK};    
         } catch (error) {
             console.log(error);
@@ -84,6 +91,7 @@ export class ListItemController {
 
         try {
             const listitem = await this.listItemService.changeStatus(listitemId, modifiedBy);
+            this.ltsGateway.wss.emit(`${SOCKET_EVENTS.LIST_ITEM_UPDATED}${listitem.id}`, {data:listitem});
             return {data: listitem, code: HttpStatus.OK};
         } catch (error) {
             console.log(error);

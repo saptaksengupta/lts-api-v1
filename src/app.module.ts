@@ -10,6 +10,7 @@ import { ListItemsModule } from './list-item/list-items.module';
 
 import { TransformInterceptor } from './shared/transform.interseptor';
 import { HttpErrorFilter } from './shared/http-error.filter';
+import { LtsAppGateway } from './lts-app.gateway';
 
 @Module({
   imports: [TypeOrmModule.forRoot(), UserModule, BoardsModule, ListItemsModule],
@@ -23,6 +24,7 @@ import { HttpErrorFilter } from './shared/http-error.filter';
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor
     },
+    LtsAppGateway,
   ],
 })
 export class AppModule { }

@@ -4,3 +4,8 @@ export const ERROR_STRINGS = {
     BOARD_NOT_EXIST_ERR_STR: "Board Not Exist",
     LIST_ITEM_NOT_EXIST_ERR_STR: "List Item Not Exist"
 }
+
+export const SOCKET_EVENTS = {
+    LIST_ITEM_UPDATED: 'listItemUpdated-',
+    LIST_ITEM_ADDED: 'listItemAdded-'
+}
