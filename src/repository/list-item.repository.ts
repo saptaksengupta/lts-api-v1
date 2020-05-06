@@ -30,6 +30,10 @@ export class ListItemRepository extends Repository<ListItem> {
         return listitemInstance;
     }
 
+    async deleteListItem(listItemId: number) {
+        return this.delete(listItemId);
+    }
+
     async toggleStatus(listitemId: number, modifiedBy: number) {
         const listitem = await this.getListitemById(listitemId);
         listitem.is_done = !listitem.is_done;

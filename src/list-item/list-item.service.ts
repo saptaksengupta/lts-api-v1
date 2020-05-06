@@ -8,7 +8,7 @@ import { ListItem } from 'src/entity/ListItem.entity';
 @Injectable()
 export class ListItemService {
 
-    constructor() {}
+    constructor() { }
 
     async createListItem(userId: number, listitemToCreate: CreateListItemDto, board: Board) {
         const listitemRepository = getCustomRepository(ListItemRepository);
@@ -28,10 +28,22 @@ export class ListItemService {
         return changedList.toResponseObject();
     }
 
-    async getListitemById(listitemId: number) {
+    async getListitemById(listitemId: number, withBoard = false) {
         const listitemRepository = getCustomRepository(ListItemRepository);
-        const createdListitem = await listitemRepository.getListitemById(listitemId);
+        let createdListitem = null;
+        if (withBoard) {
+            createdListitem = await listitemRepository.getListitemWithBoard(listitemId);
+        } else {
+            createdListitem = await listitemRepository.getListitemById(listitemId);
+        }
         return createdListitem;
+    }
+
+    async removeListItem(listItemId: number) {
+        const listitemRepository = getCustomRepository(ListItemRepository);
+        const deleteResp = await listitemRepository.deleteListItem(listItemId);
+        console.log(deleteResp);
+        return deleteResp;
     }
 
 }
