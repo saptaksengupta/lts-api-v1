@@ -1,11 +1,11 @@
 import { Controller, Post, Body, Res, HttpStatus, HttpException, UsePipes, Get, Query, Req, Param } from '@nestjs/common';
 import { CreateUserDto } from './dto/createUser.dto';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../shared/validation.pipe';
 import { UserService } from './user.service';
 
 import { Request } from 'express';
-import { DefaultHttpReturnType } from 'src/shared/global.type';
-import { ERROR_STRINGS } from 'src/shared/global-strings.constant';
+import { DefaultHttpReturnType } from '../shared/global.type';
+import { ERROR_STRINGS } from '../shared/global-strings.constant';
 
 @Controller('users')
 export class UserController {

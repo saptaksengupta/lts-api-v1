@@ -1,5 +1,5 @@
 import { Length, IsInt, Min, Max, MinLength, IsNotEmpty, IsMobilePhone, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments, ValidationOptions, registerDecorator, IsNumberString } from 'class-validator';
-import { UserRepository } from 'src/repository/user.repository';
+import { UserRepository } from '../../repository/user.repository';
 import { getCustomRepository } from 'typeorm';
 import { ApiProperty } from "@nestjs/swagger";
 

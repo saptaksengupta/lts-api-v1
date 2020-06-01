@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from "typeorm";
-import { ListItem, LIST_ITEM_STATUS } from "src/entity/ListItem.entity";
-import { CreateListItemDto } from "src/list-item/dto/createListItem.dto";
-import { Board } from "src/entity/board.entity";
+import { ListItem, LIST_ITEM_STATUS } from "../entity/ListItem.entity";
+import { CreateListItemDto } from "../list-item/dto/createListItem.dto";
+import { Board } from "../entity/Board.entity";
 
 @EntityRepository(ListItem)
 export class ListItemRepository extends Repository<ListItem> {

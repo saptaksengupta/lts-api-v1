@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ListItemRepository } from 'src/repository/list-item.repository';
+import { ListItemRepository } from '../repository/list-item.repository';
 import { getCustomRepository } from 'typeorm';
 import { CreateListItemDto } from './dto/createListItem.dto';
-import { Board } from 'src/entity/board.entity';
-import { ListItem } from 'src/entity/ListItem.entity';
+import { Board } from '../entity/board.entity';
 
 @Injectable()
 export class ListItemService {
