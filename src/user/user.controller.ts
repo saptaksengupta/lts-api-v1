@@ -21,14 +21,31 @@ export class UserController {
             const user = await this.userService.createAndSaveUser(postedUserData);
             return { data: user, code: HttpStatus.OK };
         } catch (error) {
+            console.log(error);
             throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @Post('/login')
+    async login(@Body() postUserData: any): Promise<DefaultHttpReturnType> {
+
+        const phone = postUserData.phone;
+        try {
+            const user = await this.userService.getUserByPhone(phone);
+            if (!user) {
+                postUserData.name = "GUEST";
+                return this.create(postUserData);
+            }
+            return { data: user, code: HttpStatus.OK }
+        } catch (error) {
+            console.log(error);
+            throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get('/find')
     async getUserByPhone(@Req() request: Request): Promise<DefaultHttpReturnType> {
-        const phone = parseInt(request.query.phone);
+        const phone = request.query.phone;
         const user = await this.userService.getUserByPhone(phone);
 
         if (!user) {
@@ -47,7 +64,7 @@ export class UserController {
         }
 
         const boards = user.boards;
-        return {data: boards, code: HttpStatus.OK};
+        return { data: boards, code: HttpStatus.OK };
 
     }
 

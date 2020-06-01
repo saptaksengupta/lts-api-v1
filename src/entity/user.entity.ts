@@ -10,14 +10,16 @@ export class User {
     @Column()
     name: string;
 
-    @Column()
-    phone: number;
+    @Column({
+        length:"10"
+    })
+    phone: string;
 
     @Column({
         nullable: true
     })
     image: string;
 
-    @OneToMany(type => Board, board => board.user)
+    @OneToMany(type => Board, board => board.user, { eager: true, nullable: false, onDelete: 'CASCADE' })
     boards: Board[]
 }

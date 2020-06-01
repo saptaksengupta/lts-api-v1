@@ -7,23 +7,11 @@ import { UpdateBoardDto } from './dto/updateBoard.dto';
 
 @Injectable()
 export class BoardService {
-
-    private toResponseObject(board) {
-        const responseObjet = {
-            id: board.id, 
-            name: board.name, 
-            description: board.description, 
-            createdAt: board.created_at,
-            status: board.status,
-            user: board.user
-        }
-        return responseObjet;
-    }
-
+    
     async createAndSaveBoard(boardToCreate: CreateBoardDto, user) {
         const boardRepository = getCustomRepository(BoardRepository);
         const createdBoard = await boardRepository.createAndSave(boardToCreate, user);
-        return this.toResponseObject(createdBoard);
+        return createdBoard.toResponseObject(true);
     }
 
     async updateBoard(boardId: number, boardToUpdate: UpdateBoardDto) {
