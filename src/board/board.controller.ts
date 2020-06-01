@@ -64,7 +64,6 @@ export class BoardController {
     @Get(":boardId")
     async getBoardDetailsById(@Param() params, @Query() queryParams: any) {
         const boardId = params.boardId;
-        console.log(queryParams);
         const userId = queryParams.userId;
         try {
             const user = await this.userService.getUserById(userId, false);
@@ -76,7 +75,6 @@ export class BoardController {
             if (!board.isOwnedBy(user.id)) {
                 throw new HttpException("This Board Does Not Belongs To This User At All", HttpStatus.BAD_REQUEST);
             }
-
             return { data: { board: board.toResponseObject(true) }, code: HttpStatus.OK };
         } catch (error) {
             console.log(error);
