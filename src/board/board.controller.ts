@@ -1,14 +1,13 @@
 import { Controller, Post, Body, UsePipes, HttpException, HttpStatus, Put, Param, Get, Query } from '@nestjs/common';
-import { DefaultHttpReturnType } from 'src/shared/global.type';
+import { DefaultHttpReturnType } from '../shared/global.type';
 import { CreateBoardDto } from './dto/createBoardDto.dto';
-import { ValidationPipe } from 'src/shared/validation.pipe';
+import { ValidationPipe } from '../shared/validation.pipe';
 import { BoardService } from './board.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 //constants
 import { ERROR_STRINGS } from '../shared/global-strings.constant';
 import { UpdateBoardDto } from './dto/updateBoard.dto';
-import { Board } from 'src/entity/board.entity';
 
 @Controller('boards')
 export class BoardController {
