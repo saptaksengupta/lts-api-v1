@@ -16,8 +16,13 @@ export class UserRepository extends Repository<User> {
         return this.findOne({ phone });
     }
 
-    findUserById(id: number) {
-        return this.findOne({id}, {relations: ['boards']});
+    findUserById(id: number, withRelations = false) {
+        if(withRelations) {
+            return this.findOne({id}, {relations: ["boards"]});
+        } else {
+            return this.findOne({id});
+        }
+        
     }
 
 }

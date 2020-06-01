@@ -31,4 +31,20 @@ export class ListItem {
 
     @ManyToOne(type => Board, board => board.listitems)
     board: Board;
+
+    public toResponseObject(withBoard = false) {
+        const respObj = { 
+            id: this.id, 
+            description: this.description, 
+            isDone: this.is_done,
+            createdAt: this.created_at,
+            updatedAt: this.updated_at
+        }
+
+        if(withBoard) {
+            respObj['board'] = this.board.toResponseObject(false);
+        }
+
+        return respObj;
+    }
 }

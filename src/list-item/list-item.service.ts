@@ -2,30 +2,48 @@ import { Injectable } from '@nestjs/common';
 import { ListItemRepository } from 'src/repository/list-item.repository';
 import { getCustomRepository } from 'typeorm';
 import { CreateListItemDto } from './dto/createListItem.dto';
+import { Board } from 'src/entity/board.entity';
+import { ListItem } from 'src/entity/ListItem.entity';
 
 @Injectable()
 export class ListItemService {
 
     constructor() { }
 
-    async createListItem(userId: number, listitemToCreate: CreateListItemDto) {
+    async createListItem(userId: number, listitemToCreate: CreateListItemDto, board: Board) {
         const listitemRepository = getCustomRepository(ListItemRepository);
-        return await listitemRepository.createAndSave(userId, listitemToCreate);
+        const createdListItem = await listitemRepository.createAndSave(userId, listitemToCreate, board);
+        return createdListItem.toResponseObject();
     }
 
     async updateListitem(listitemInstance, modificationDet) {
         const listitemRepository = getCustomRepository(ListItemRepository);
-        return await listitemRepository.updateListitem(listitemInstance, modificationDet);
+        const updatedListItem = await listitemRepository.updateListitem(listitemInstance, modificationDet);
+        return updatedListItem.toResponseObject();
     }
 
     async changeStatus(listItemId: number, modifiedBy: number) {
         const listitemRepository = getCustomRepository(ListItemRepository);
-        return await listitemRepository.toggleStatus(listItemId, modifiedBy);
+        const changedList = await listitemRepository.toggleStatus(listItemId, modifiedBy);
+        return changedList.toResponseObject();
     }
 
-    async getListitemById(listitemId: number) {
+    async getListitemById(listitemId: number, withBoard = false) {
         const listitemRepository = getCustomRepository(ListItemRepository);
-        return await listitemRepository.getListitemById(listitemId);
+        let createdListitem = null;
+        if (withBoard) {
+            createdListitem = await listitemRepository.getListitemWithBoard(listitemId);
+        } else {
+            createdListitem = await listitemRepository.getListitemById(listitemId);
+        }
+        return createdListitem;
+    }
+
+    async removeListItem(listItemId: number) {
+        const listitemRepository = getCustomRepository(ListItemRepository);
+        const deleteResp = await listitemRepository.deleteListItem(listItemId);
+        console.log(deleteResp);
+        return deleteResp;
     }
 
 }

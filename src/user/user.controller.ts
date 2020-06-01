@@ -24,7 +24,23 @@ export class UserController {
             console.log(error);
             throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
+    @Post('/login')
+    async login(@Body() postUserData: any): Promise<DefaultHttpReturnType> {
+
+        const phone = postUserData.phone;
+        try {
+            const user = await this.userService.getUserByPhone(phone);
+            if (!user) {
+                postUserData.name = "GUEST";
+                return this.create(postUserData);
+            }
+            return { data: user, code: HttpStatus.OK }
+        } catch (error) {
+            console.log(error);
+            throw new HttpException(ERROR_STRINGS.INTERNAL_SERVER_ERR_STR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get('/find')
@@ -48,7 +64,7 @@ export class UserController {
         }
 
         const boards = user.boards;
-        return {data: boards, code: HttpStatus.OK};
+        return { data: boards, code: HttpStatus.OK };
 
     }
 

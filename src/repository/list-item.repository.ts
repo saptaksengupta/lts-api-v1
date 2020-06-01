@@ -1,11 +1,12 @@
 import { Repository, EntityRepository } from "typeorm";
 import { ListItem, LIST_ITEM_STATUS } from "src/entity/ListItem.entity";
 import { CreateListItemDto } from "src/list-item/dto/createListItem.dto";
+import { Board } from "src/entity/board.entity";
 
 @EntityRepository(ListItem)
 export class ListItemRepository extends Repository<ListItem> {
 
-    createAndSave(createdBy: number, createListDto: CreateListItemDto) {
+    createAndSave(createdBy: number, createListDto: CreateListItemDto, board: Board) {
         const date = new Date();
         const listItem = new ListItem();
         listItem.description = createListDto.description;
@@ -14,7 +15,8 @@ export class ListItemRepository extends Repository<ListItem> {
         listItem.updated_at = date.toISOString();
         listItem.last_modified_by = createdBy;
 
-        return this.save(listItem);
+        const listItemToSave = this.create({...listItem, board: board})
+        return this.save(listItemToSave);
     }
 
     updateListitem(listitemInstance: ListItem, modificationDet){
@@ -28,6 +30,10 @@ export class ListItemRepository extends Repository<ListItem> {
         return listitemInstance;
     }
 
+    async deleteListItem(listItemId: number) {
+        return this.delete(listItemId);
+    }
+
     async toggleStatus(listitemId: number, modifiedBy: number) {
         const listitem = await this.getListitemById(listitemId);
         listitem.is_done = !listitem.is_done;
@@ -39,6 +45,10 @@ export class ListItemRepository extends Repository<ListItem> {
 
     async getListitemById(listitemId: number){
         return this.findOne({id: listitemId});        
+    }
+
+    async getListitemWithBoard(listitemId: number) {
+        return this.findOne({id: listitemId}, { relations: ["board"] });
     }
 
 }
