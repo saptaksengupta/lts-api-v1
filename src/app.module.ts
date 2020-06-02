@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { config } from '../config';
 import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,9 +13,22 @@ import { ListItemsModule } from './list-item/list-items.module';
 import { TransformInterceptor } from './shared/transform.interseptor';
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { LtsAppGateway } from './lts-app.gateway';
+import { DatabaseConfig } from 'database.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UserModule, BoardsModule, ListItemsModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config]
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: DatabaseConfig
+    }),
+    UserModule, 
+    BoardsModule, 
+    ListItemsModule
+  ],
   controllers: [AppController],
   providers: [AppService,
     {
