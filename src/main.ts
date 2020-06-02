@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
-
   const options = new DocumentBuilder()
     .setTitle('List2Share Api Endpoints')
     .setDescription('The List2Share Api Endpoint Documentation.')
@@ -15,6 +14,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger-ui-api', app, document);
   app.enableCors();
-  await app.listen(9999);
+  await app.listen(process.env.PORT || 9999);
 }
 bootstrap();
