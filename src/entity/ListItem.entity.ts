@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
-import { Board } from "./board.entity";
+import { Board } from "./Board.entity";
 
 
 export const LIST_ITEM_STATUS = {

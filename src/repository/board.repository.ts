@@ -1,9 +1,8 @@
 import { EntityRepository, Repository, EntityManager } from "typeorm";
 import { User } from "../entity/user.entity";
-import { CreateUserDto } from '../user/dto/createUser.dto';
-import { CreateBoardDto } from "src/board/dto/createBoardDto.dto";
-import { Board } from "src/entity/board.entity";
-import { UpdateBoardDto } from "src/board/dto/updateBoard.dto";
+import { CreateBoardDto } from "../board/dto/createBoardDto.dto";
+import { Board } from "../entity/Board.entity";
+import { UpdateBoardDto } from "../board/dto/updateBoard.dto";
 
 @EntityRepository(Board)
 export class BoardRepository extends Repository<Board> {

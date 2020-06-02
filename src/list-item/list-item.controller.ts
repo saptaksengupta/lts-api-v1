@@ -1,10 +1,10 @@
 import { Controller, Post, Body, HttpException, HttpStatus, Put, Param, Req, Get, Delete } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
-import { ERROR_STRINGS, SOCKET_EVENTS } from 'src/shared/global-strings.constant';
+import { UserService } from '../user/user.service';
+import { ERROR_STRINGS, SOCKET_EVENTS } from '../shared/global-strings.constant';
 import { ListItemService } from './list-item.service';
 import { CreateListItemDto } from './dto/createListItem.dto';
-import { BoardService } from 'src/board/board.service';
-import { LtsAppGateway } from 'src/lts-app.gateway';
+import { BoardService } from '../board/board.service';
+import { LtsAppGateway } from '../lts-app.gateway';
 
 @Controller('boards/:boardId/list-items/')
 export class ListItemController {
