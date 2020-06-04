@@ -4,27 +4,33 @@ import { CreateBoardDto } from './dto/createBoardDto.dto';
 import { ValidationPipe } from '../shared/validation.pipe';
 import { BoardService } from './board.service';
 import { UserService } from '../user/user.service';
+import { LtsAppGateway } from '../lts-app.gateway';
 
 //constants
-import { ERROR_STRINGS } from '../shared/global-strings.constant';
+import { ERROR_STRINGS, SOCKET_EVENTS } from '../shared/global-strings.constant';
 import { UpdateBoardDto } from './dto/updateBoard.dto';
 
 @Controller('boards')
 export class BoardController {
 
-    constructor(private baordService: BoardService, private userService: UserService) { }
+    constructor(
+        private baordService: BoardService,
+        private userService: UserService,
+        private ltsGateway: LtsAppGateway
+    ) { }
 
     @Post()
     @UsePipes(new ValidationPipe())
     async createBoard(@Body() postedBoardData: CreateBoardDto): Promise<DefaultHttpReturnType> {
 
-        const user = await this.userService.getUserById(postedBoardData.userId);
-        if (!user) {
-            throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
-        }
-
         try {
+            const user = await this.userService.getUserById(postedBoardData.userId);
+            if (!user) {
+                throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
+            }
+
             const createdBoard = await this.baordService.createAndSaveBoard(postedBoardData, user);
+            this.ltsGateway.wss.emit(SOCKET_EVENTS.BOARD_ADDED, { data: createdBoard });
             return { data: createdBoard, code: HttpStatus.OK };
         } catch (error) {
             console.log(error);
@@ -53,6 +59,7 @@ export class BoardController {
         }
         try {
             const updatedBoardDetails = await this.baordService.updateBoard(boardId, boardToUpdate);
+            this.ltsGateway.wss.emit(SOCKET_EVENTS.BOARD_UPDATED, { data: board.toResponseObject() });
             return { data: updatedBoardDetails, code: HttpStatus.OK }
         } catch (error) {
             console.log(error);

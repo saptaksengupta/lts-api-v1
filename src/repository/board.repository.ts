@@ -16,7 +16,7 @@ export class BoardRepository extends Repository<Board> {
             updated_at: new Date().toISOString()
         };
 
-        const board = this.create({ ...boardObj, user: user })
+        const board = this.create({ ...boardObj, user: user, listitems: [] })
         return this.save(board);
     }
 
