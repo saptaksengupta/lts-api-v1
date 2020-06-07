@@ -47,4 +47,8 @@ export class BoardRepository extends Repository<Board> {
         return this.findAll();
     }
 
+    deleteBoard(boardId: number) {
+        return this.delete(boardId);
+    }
+
 }

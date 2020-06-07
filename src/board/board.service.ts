@@ -28,4 +28,10 @@ export class BoardService {
         const boardRepository = getCustomRepository(BoardRepository);
         return await boardRepository.findAll();
     }
+
+    async removeBoard(boardId: number) {
+        const boardRepository = getCustomRepository(BoardRepository);
+        const deleteResp = await boardRepository.deleteBoard(boardId);
+        return deleteResp;
+    }
 }
