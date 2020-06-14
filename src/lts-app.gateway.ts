@@ -2,7 +2,7 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayInit, OnGatewayConnection,
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 
-@WebSocketGateway(9998, {namespace: 'list-and-boards', origins: '*'})
+@WebSocketGateway(9998, {namespace: 'list-and-boards', origins: 'https://192.168.43.104:3000/'})
 export class LtsAppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
   @WebSocketServer() wss: Server;
