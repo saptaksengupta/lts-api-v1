@@ -49,7 +49,7 @@ export class BoardController {
         }
 
         const boardId = params.boardId;
-        const board = await this.baordService.getBoardById(boardId);
+        let board = await this.baordService.getBoardById(boardId);
         if (!board) {
             throw new HttpException(ERROR_STRINGS.BOARD_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
         }
@@ -59,7 +59,8 @@ export class BoardController {
         }
         try {
             const updatedBoardDetails = await this.baordService.updateBoard(boardId, boardToUpdate);
-            this.ltsGateway.wss.emit(SOCKET_EVENTS.BOARD_UPDATED, { data: board.toResponseObject() });
+            board = await this.baordService.getBoardById(boardId);
+            this.ltsGateway.wss.emit(SOCKET_EVENTS.BOARD_UPDATED, { data: board.toResponseObject(true) });
             return { data: updatedBoardDetails, code: HttpStatus.OK }
         } catch (error) {
             console.log(error);
