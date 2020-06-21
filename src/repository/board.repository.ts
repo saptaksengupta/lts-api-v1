@@ -1,7 +1,7 @@
 import { EntityRepository, Repository, EntityManager } from "typeorm";
 import { User } from "../entity/user.entity";
 import { CreateBoardDto } from "../board/dto/createBoardDto.dto";
-import { Board } from "../entity/Board.entity";
+import { Board, BoardStatus } from "../entity/Board.entity";
 import { UpdateBoardDto } from "../board/dto/updateBoard.dto";
 
 @EntityRepository(Board)
@@ -28,7 +28,7 @@ export class BoardRepository extends Repository<Board> {
         }
 
         if(boardToUpdate.description){
-            propertiesToModify['name'] = boardToUpdate.name;
+            propertiesToModify['description'] = boardToUpdate.description;
         }
 
         if(boardToUpdate.status){
@@ -48,7 +48,7 @@ export class BoardRepository extends Repository<Board> {
     }
 
     deleteBoard(boardId: number) {
-        return this.delete(boardId);
+        return this.update(boardId, {status: BoardStatus.DELETED});
     }
 
 }

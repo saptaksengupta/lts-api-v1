@@ -63,7 +63,7 @@ export class UserController {
             throw new HttpException(ERROR_STRINGS.USER_NOT_EXIST_ERR_STR, HttpStatus.BAD_REQUEST);
         }
 
-        const boards = user.boards;
+        const boards = user.activeBoards();
         return { data: boards, code: HttpStatus.OK };
 
     }

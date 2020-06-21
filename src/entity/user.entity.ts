@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
-import { Board } from './Board.entity';
+import { Board, BoardStatus } from './Board.entity';
 
 @Entity()
 export class User {
@@ -22,4 +22,8 @@ export class User {
 
     @OneToMany(type => Board, board => board.user, { eager: true, nullable: false, onDelete: 'CASCADE' })
     boards: Board[]
+
+    public activeBoards() {
+        return this.boards.filter((board) => board.status === BoardStatus.ACTIVE)
+    }
 }
